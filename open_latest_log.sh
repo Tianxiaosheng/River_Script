@@ -59,10 +59,25 @@ if [[ -z "${suffix}" ]]; then
   exit 2
 fi
 
+printf '[open_latest_log] target directory: %s\n' "${target_dir}" >&2
+printf '[open_latest_log] suffix: %s\n' "${suffix}" >&2
+
+matches_file="$(mktemp)"
+trap 'rm -f "${matches_file}"' EXIT
+
+find "${target_dir}" -maxdepth 1 -type f -name "*${suffix}" -printf '%T@ %p\n' |
+  sort -nr > "${matches_file}"
+
+matched_count="$(wc -l < "${matches_file}")"
+printf '[open_latest_log] matched files: %s\n' "${matched_count}" >&2
+
+if [[ "${matched_count}" -gt 0 ]]; then
+  printf '[open_latest_log] newest candidates:\n' >&2
+  head -n 5 "${matches_file}" | cut -d ' ' -f 2- | sed 's/^/[open_latest_log]   /' >&2
+fi
+
 latest_file="$(
-  find "${target_dir}" -maxdepth 1 -type f -name "*${suffix}" -printf '%T@ %p\n' |
-    sort -nr |
-    head -n 1 |
+  head -n 1 "${matches_file}" |
     cut -d ' ' -f 2-
 )"
 
@@ -71,4 +86,7 @@ if [[ -z "${latest_file}" ]]; then
   exit 1
 fi
 
-"${EDITOR:-vim}" "${latest_file}"
+printf '[open_latest_log] selected file: %s\n' "${latest_file}" >&2
+printf '[open_latest_log] launching vim\n' >&2
+printf 'Opening latest file: %s\n' "${latest_file}"
+vim "${latest_file}"

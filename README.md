@@ -10,7 +10,8 @@ ROVER_SCRIPT 用于存放 Rover 相关的日常工具脚本。
 DEFAULT_SUFFIX=".log"
 ```
 
-脚本会使用 `${EDITOR:-vim}` 打开匹配文件；如果没有设置 `EDITOR`，默认使用 `vim`。
+脚本会直接使用 `vim` 打开匹配文件。
+执行过程中会在终端打印查找目录、匹配后缀、候选数量、候选文件和最终打开的文件，便于排查选中文件是否符合预期。
 
 ### 用法
 
@@ -30,12 +31,6 @@ DEFAULT_SUFFIX=".log"
 
 ```bash
 ./open_latest_log.sh -e .txt /path/to/log_dir
-```
-
-临时指定编辑器：
-
-```bash
-EDITOR=vim ./open_latest_log.sh /path/to/log_dir
 ```
 
 ### 参数
