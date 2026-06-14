@@ -22,14 +22,16 @@ def main():
     # 2. 定义基础路径
     #base_path = "/home/xiaosheng/Documents/场景库/序列场景"
     #base_path = "/home/xiaosheng/Documents/场景库/对比库"
-    base_path = "/home/xiaosheng/Documents/场景库/脑补场景"
+    #base_path = "/home/xiaosheng/Documents/场景库/脑补场景"
+    #base_path = "/home/xiaosheng/Documents/场景库/决策意图更新"
+    #base_path = "/home/xiaosheng/Documents/场景库/感知误检"
     #base_path = "/home/xiaosheng/Documents/场景库/大场景集"
     #base_path = "/home/xiaosheng/Documents/场景库/低速跑行"
     #base_path = "/home/xiaosheng/Documents/场景库/博弈安全"
     #base_path = "/home/xiaosheng/Documents/场景库/开放博弈"
     #base_path = "/home/xiaosheng/Documents/场景库/开放博弈2"
     #base_path = "/home/xiaosheng/Documents/场景库/unexpect_speed_limit"
-    #base_path = "/home/xiaosheng/Documents/场景库/BugAnalyzed"
+    base_path = "/home/xiaosheng/Documents/场景库/BugAnalyzed"
     target_dir = os.path.join(base_path, case_folder_name)
 
     # 检查文件夹是否存在
@@ -99,7 +101,7 @@ def main():
     # 5. 构建并执行命令
     script_path = "simulation2/python_script/simulation2.py"
     if use_worldsim:
-        modules = f"PREDICTION,PLANNING,{sim_chassis_module},PERFECT_CONTROL,OFFLINE_ROUTING,ARTIFICIAL_OBSTACLE"
+        modules = f"PREDICTION,PLANNING,{sim_chassis_module},PERFECT_CONTROL,OFFLINE_ROUTING,MULTI_REF_LINE,ARTIFICIAL_OBSTACLE"
         final_command = [
             "python", script_path,
             "-i", input_file,
@@ -108,7 +110,8 @@ def main():
         ]
     else:
         #modules = f"PREDICTION,PLANNING,PERFECT_CONTROL,{sim_chassis_module},OFFLINE_ROUTING,ARTIFICIAL_OBSTACLE"
-        modules = f"PREDICTION,PLANNING,PERFECT_CONTROL,{sim_chassis_module},OFFLINE_ROUTING"
+        #modules = f"PREDICTION,PLANNING,PERFECT_CONTROL,{sim_chassis_module},OFFLINE_ROUTING"
+        modules = f"PREDICTION,PLANNING,PERFECT_CONTROL,{sim_chassis_module},OFFLINE_ROUTING,MULTI_REF_LINE,ARTIFICIAL_OBSTACLE"
         final_command = [
             "python", script_path,
             "-i", input_file,
